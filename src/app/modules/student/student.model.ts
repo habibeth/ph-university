@@ -1,8 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { StudentModel, TGuardians, TLocalGuardians, TStudent, TUserName } from './student.interface';
 import validator from 'validator';
-import bcrypt from 'bcrypt'
-import config from '../../config';
 
 const userNameSchema = new Schema<TUserName>({
     firstName: {
@@ -67,7 +65,7 @@ const studentSchema = new Schema<TStudent, StudentModel>({
         trim: true,
         required: [true, "Gender is Required!"]
     },
-    dateOfBirth: { type: String },
+    dateOfBirth: { type: Date },
     email: {
         type: String,
         required: [true, "Email is Required!"],
@@ -99,6 +97,11 @@ const studentSchema = new Schema<TStudent, StudentModel>({
         required: [true, "Local Guardians Information is Required!"]
     },
     profileImage: { type: String, trim: true, },
+    admissionSemester: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'AcademicSemester'
+    },
     isDeleted: {
         type: Boolean,
         default: false
