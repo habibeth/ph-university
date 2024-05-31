@@ -1,6 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { StudentModel, TGuardians, TLocalGuardians, TStudent, TUserName } from './student.interface';
 import validator from 'validator';
+import { AppError } from '../../error/AppError';
+import httpStatus from 'http-status';
 
 const userNameSchema = new Schema<TUserName>({
     firstName: {
@@ -105,6 +107,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    academicDepartment: {
+        type: Schema.Types.ObjectId,
+        ref: 'AcademicDepartment'
     }
 }, {
     toJSON: {
@@ -141,6 +147,14 @@ studentSchema.pre('aggregate', async function (next) {
 
     next()
 })
+
+// studentSchema.pre("findOneAndUpdate", async function (next) {
+//     const query = this.getQuery()
+//     const existingUser = await Student.findOne(query);
+//     if (!existingUser) {
+//         throw new AppError(httpStatus.NOT_FOUND, "User not found!")
+//     }
+// })
 
 
 //custom static methods
