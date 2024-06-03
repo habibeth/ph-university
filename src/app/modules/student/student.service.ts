@@ -7,13 +7,25 @@ import { User } from "../user/user.model";
 
 
 
-const getAllStudentFromDB = async () => {
-    const result = await Student.find().populate('admissionSemester').populate({
-        path: 'academicDepartment',
-        populate: {
-            path: 'academicFaculty'
-        }
-    });
+const getAllStudentFromDB = async (query: Record<string, unknown>) => {
+    const studentSearchableFiled = ['email', 'name.firstName', 'name.lastName', 'presentAddress'];
+    let searchTerm = '';
+    if (query?.searchTerm) {
+        searchTerm = query?.searchTerm as string;
+    }
+
+    const result = await Student.find({
+        $or: studentSearchableFiled?.map((field) => ({
+            [field]: { $regex: searchTerm, $options: 'i' }
+        }))
+    })
+        .populate('admissionSemester')
+        .populate({
+            path: 'academicDepartment',
+            populate: {
+                path: 'academicFaculty'
+            }
+        });
     return result
 }
 

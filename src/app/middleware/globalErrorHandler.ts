@@ -6,6 +6,7 @@ import { handleZodError } from "../error/handleZodError";
 import { handleValidationError } from "../error/handleValidationError";
 import { handleCastError } from "../error/handleCastError";
 import { handleDuplicateError } from "../error/handleDuplicateError";
+import { AppError } from "../error/AppError";
 
 export const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     //settings default value
@@ -44,6 +45,25 @@ export const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => 
         statusCode = simplifiedError?.statusCode;
         message = simplifiedError?.message;
         errorSources = simplifiedError?.errorSources;
+    }
+    else if (err instanceof AppError) {
+        statusCode = err?.statusCode;
+        message = err?.message;
+        errorSources = [
+            {
+                path: "",
+                message: err?.message
+            }
+        ]
+    }
+    else if (err instanceof Error) {
+        message = err?.message;
+        errorSources = [
+            {
+                path: "",
+                message: err?.message
+            }
+        ]
     }
 
     return res.status(statusCode).json({
