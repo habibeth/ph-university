@@ -8,8 +8,8 @@ const route = Router();
 route.post('/create-course', validateRequest(CourseValidations.createCourseValidationSchema), CourseControllers.createCourse);
 route.get('/', CourseControllers.getAllCorses);
 route.get('/:id', CourseControllers.getSingleCourse);
-// route.patch('/:facultyId', validateRequest(AcademicFacultyValidation.updateAcademicFacultyValidationSchema), AcademicFacultyController.updateSingleAcademicFaculty);
-route.delete(':id', CourseControllers.deleteCourse)
+route.patch('/:id', validateRequest(CourseValidations.updateCourseValidationSchema), CourseControllers.updateCourse);
+route.delete('/:id', CourseControllers.deleteCourse)
 
 
 

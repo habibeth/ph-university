@@ -13,7 +13,7 @@ const createCourse = catchAsync(async (req, res) => {
 
 
 const getAllCorses = catchAsync(async (req, res) => {
-    const result = await CourseServices.getAllCoursesFromDB();
+    const result = await CourseServices.getAllCoursesFromDB(req.query);
     sendResponse(res, {
         message: "Get All Course Successfully!",
         data: result
@@ -40,10 +40,20 @@ const deleteCourse = catchAsync(async (req, res) => {
     })
 })
 
+const updateCourse = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await CourseServices.updateCourseFromDB(id, req.body);
+    sendResponse(res, {
+        message: "Course Updated Successfully!",
+        data: result
+    })
+})
+
 
 export const CourseControllers = {
     createCourse,
     getAllCorses,
     getSingleCourse,
-    deleteCourse
+    deleteCourse,
+    updateCourse
 }

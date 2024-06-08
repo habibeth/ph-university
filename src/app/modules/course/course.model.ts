@@ -1,5 +1,6 @@
 import { Schema, Types, model } from "mongoose";
 import { TCourse, TPreRequisiteCourses } from "./course.interface";
+import { required } from "joi";
 
 
 const preRequisiteCoursesSchema = new Schema<TPreRequisiteCourses>({
@@ -36,6 +37,12 @@ const courseSchema = new Schema<TCourse>({
         required: [true, "Code is Required!"]
     },
     preRequisiteCourses: [preRequisiteCoursesSchema],
+    isDeleted: {
+        type: Boolean,
+        trim: true,
+        required: true,
+        default: false
+    }
 })
 
 

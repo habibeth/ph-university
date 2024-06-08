@@ -13,8 +13,7 @@ router.patch(
     FacultyControllers.updateFaculty,
 );
 
-router.delete('/:id', FacultyControllers.deleteFaculty);
-
 router.get('/', FacultyControllers.getAllFaculties);
+router.delete('/:id', FacultyControllers.deleteFaculty);
 
 export const FacultyRoutes = router;
