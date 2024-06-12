@@ -1,7 +1,7 @@
 import QueryBuilder from "../../builder/QueryBuilder";
 import { CourseSearchableFields } from "./course.constant";
-import { TCourse } from "./course.interface"
-import { Course } from "./course.model"
+import { TCourse, TCourseFaculty } from "./course.interface"
+import { Course, CourseFaculty } from "./course.model"
 
 const createCourseIntoDB = async (payload: TCourse) => {
     const result = await Course.create(payload);
@@ -68,11 +68,42 @@ const updateCourseFromDB = async (id: string, payload: Partial<TCourse>) => {
     return result;
 }
 
+const assignFacultiesWithCourseIntoDB = async (id: string, payload: Partial<TCourseFaculty>) => {
+    const result = await CourseFaculty.findByIdAndUpdate(id,
+        {
+            course: id,
+            $addToSet: { faculties: { $each: payload } }
+        },
+        {
+            upsert: true,
+            new: true
+        }
+    )
+
+    return result;
+}
+
+const removeFacultiesFromCourseIntoDB = async (id: string, payload: Partial<TCourseFaculty>) => {
+    const result = await CourseFaculty.findByIdAndUpdate(id,
+        {
+            $pull: { faculties: { $in: payload } }
+        },
+        {
+            upsert: true,
+            new: true
+        }
+    )
+
+    return result;
+}
+
 
 export const CourseServices = {
     createCourseIntoDB,
     getAllCoursesFromDB,
     getSingleCourseFromDB,
     deleteCourseFromDB,
-    updateCourseFromDB
+    updateCourseFromDB,
+    assignFacultiesWithCourseIntoDB,
+    removeFacultiesFromCourseIntoDB
 }
