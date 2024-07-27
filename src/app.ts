@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express, { Application, NextFunction, Request, Response, response } from 'express';
+import cookieParser from 'cookie-parser';
 import { StudentRoutes } from './app/modules/student/student.route';
 import { UserRoutes } from './app/modules/user/user.route';
 import { globalErrorHandler } from './app/middleware/globalErrorHandler';
@@ -10,7 +11,8 @@ const app: Application = express();
 
 //parser
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser())
+app.use(cors({ origin: ['http://localhost:5173'] }));
 
 app.use("/api/v1", router);
 

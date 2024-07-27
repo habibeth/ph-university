@@ -32,15 +32,24 @@ export const createOfferedCourseSchemaValidation = z.object({
 
 export const updateOfferedCourseSchemaValidation = z.object({
     body: z.object({
-        faculty: z.string().optional(),
-        maxCapacity: z.number().optional(),
-        days: z.array(z.enum([...Days] as [string, ...string[]])).optional(),
+        faculty: z.string(),
+        maxCapacity: z.number(),
+        days: z.array(z.enum([...Days] as [string, ...string[]])),
         startTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
             message: "Start time must be in HH:MM format",
-        }).optional(),
+        }),
         endTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
             message: "Start time must be in HH:MM format",
-        }).optional(),
+        }),
+    }).refine((body) => {
+        const [startHour, startMinute] = body.startTime.split(':').map(Number);
+        const [endHour, endMinute] = body.endTime.split(':').map(Number);
+        const startTime = new Date(0, 0, 0, startHour, startMinute);
+        const endTime = new Date(0, 0, 0, endHour, endMinute);
+        return startTime < endTime;
+    }, {
+        message: "Start time must be before end time",
+        path: ["endTime"],
     })
 });
 
