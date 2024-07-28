@@ -1,8 +1,9 @@
 import { Schema, model } from 'mongoose';
-import { StudentModel, TGuardians, TLocalGuardians, TStudent, TUserName } from './student.interface';
+import { StudentModel, TGuardians, TLocalGuardians, TStudent } from './student.interface';
 import validator from 'validator';
 import { AppError } from '../../error/AppError';
 import httpStatus from 'http-status';
+import { TUserName } from '../../interface/userInfoInterface';
 
 const userNameSchema = new Schema<TUserName>({
     firstName: {

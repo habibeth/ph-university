@@ -50,7 +50,7 @@ const createStudentValidationSchema = z.object({
             guardians: createGuardiansValidationSchema,
             localGuardians: createLocalGuardiansValidationSchema,
             admissionSemester: z.string(),
-            profileImage: z.string().trim().optional(),
+            // profileImage: z.string().trim().optional(),
             academicDepartment: z.string()
         })
     })
@@ -104,7 +104,7 @@ const updateStudentValidationSchema = z.object({
             guardians: updateGuardiansValidationSchema.optional(),
             localGuardians: updateLocalGuardiansValidationSchema.optional(),
             admissionSemester: z.string().optional(),
-            profileImage: z.string().trim().optional(),
+            // profileImage: z.string().trim().optional(),
             academicDepartment: z.string().optional()
         })
     })

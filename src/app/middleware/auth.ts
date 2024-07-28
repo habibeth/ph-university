@@ -14,7 +14,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
         const token = req.headers.authorization;
         //check token  exists
         if (!token) {
-            throw new AppError(httpStatus.UNAUTHORIZED, "You are not Authorize Person!")
+            throw new AppError(httpStatus.UNAUTHORIZED, "You are not Authorize Persons!")
         }
 
         //check validated token
